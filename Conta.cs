@@ -11,14 +11,14 @@ class Conta
 
     public void Sacar(double valor)
     {
-        if(valor > Saldo){
-            throw new ArgumentException("saque invalido");
-        }
+        VerificarValor(valor);
+        VerificarSaldo(valor);
         Saldo = Saldo - valor;
     }
 
     public void Depositar(double valor)
     {
+        VerificarValor(valor);
         if(valor <= 0 ){
             throw new ArgumentException("O valor deve ser maior");
         }
@@ -27,8 +27,19 @@ class Conta
 
     public void Transferir(double valor, Conta conta)
     {
-        if(valor > Saldo || valor <=0) throw new ArgumentException("Digite uma valor válido de acordo com seu saldo.");
-        Saldo = Saldo - valor;
-        conta.Saldo = conta.Saldo + valor;
+        Sacar(valor);
+        conta.Depositar(valor);
     }
+    private void VerificarValor(double valor){
+        if(valor <= 0){            
+            throw new ArgumentException("O valor deve ser positivo.");
+        }
+    }
+
+    private void VerificarSaldo(double valor){
+        if(valor > Saldo){
+            throw new ArgumentException("Digite uma valor válido de acordo com seu saldo.");
+        }
+    }
+    
 }
